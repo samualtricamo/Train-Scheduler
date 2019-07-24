@@ -1,4 +1,4 @@
-document.ready(function() {
+$document.ready(function() {
 
 
   // Your web app's Firebase configuration
@@ -34,5 +34,37 @@ dataRef.ref().push({
     time: firstTrain,
     frequency: frequency
 });
-  });
+});
 
+dataRef.ref().on("child_added", function(childSnapshot) {
+    console.log(childSnapshot.val());
+
+var name = childSnapshot.val().name;
+var destination = childsnapshot.val().destination;
+var frequency = childSnapshot.val().frequency;
+var time = childSnapshot.val().time;
+var key = childSnapshot.val().key;
+
+
+
+var currentTime = moment();
+console.log("Current Time: " + moment(currentTime).format("hh:mm"));
+
+$("#currentTime").html("Current Time: " + moment(currentTime).format("hh:mm"));
+
+var timeDiff = moment().diff(moment(firstTrainConverted), "minutes");
+
+var timeRemainder = timeDiff % frequency;
+
+var nextTrainMin = frequency - timeRemainder;
+
+var nextTrainAdd = moment().add(nextTrainMin, "minutes");
+var nextTrainArr = moment(nextTrainAdd).format("hh:mm");
+
+$("#schedule").prepend("<tr><td>") + name + "</td><td>" + destination + "</td><td>" + frequency + "/td><td>" + nextTrainArr + "</td><td>" +nextTrainMin + "</td><td>"
+
+},
+
+function(err) {});
+
+});
